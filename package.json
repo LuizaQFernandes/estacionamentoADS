@@ -1,0 +1,21 @@
+{
+  "name": "estacionamento",
+  "version": "1.0.0",
+  "description": "Backend nodeJS para app estacionamento",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "stored",
+    "procedure",
+    "sql",
+    "server"
+  ],
+  "author": "Luiza",
+  "license": "MIT",
+  "dependencies": {
+    "mssql": "^7.2.1"
+  }
+}
