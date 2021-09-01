@@ -1,5 +1,5 @@
-import sql from 'mssql';
-import {sqlConfig} from './sql/config'
+import sql from 'mssql'
+import { sqlConfig } from './sql/config.js'
 
 sql.on('error', err => {
     console.error(err)
@@ -7,12 +7,11 @@ sql.on('error', err => {
 
 sql.connect(sqlConfig).then(pool =>{
     return pool.request()
-    .input('placa', sqlChar(7), 'ACB1234')
+    .input('placa', sql.Char(7), 'AtB1234')
     .input('nome', sql.VarChar(50), 'fusca')
-    .input('descrição', sql.VarChar(200), 'fusca para colecionar')
-    .input('fabricação', sql.Date, '19/01/01')
+    .input('descricao', sql.VarChar(200), 'fusca para colecionar')
+    .input('fabricacao', sql.Date, '1982-04-02')
     .input('preco', sql.Numeric, 3000)
-    .output('codigogerado', sql.Int)
     .execute('SP_I_VEI_VEICULO')
 }).then(result => {
     console.log(result)
