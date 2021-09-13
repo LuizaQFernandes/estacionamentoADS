@@ -1,20 +1,32 @@
-import sql from 'mssql'
-import { sqlConfig } from './sql/config.js'
+import express from 'express'
+const app = express()
+const port = 4000
 
-sql.on('error', err => {
-    console.error(err)
+app.use(express.urlencoded({extended: true})) // converterá caracteres especiais em html entity 
+app.use(express.json()) // Faré o Parse no conteudo JSON
+app.disable('x-powered-by')
+
+import rotasVeiculos from './routes/veiculos.js'
+
+//rotas RESTfull
+app.use('/api/veiculos', rotasVeiculos)
+
+app.get('/api', (req, res) => {
+    res.status(200).json({
+        mensagem: 'API do Estacionamento 100% funcional!',
+        versao: '1.0.0'
+    })
 })
 
-sql.connect(sqlConfig).then(pool =>{
-    return pool.request()
-    .input('placa', sql.Char(7), 'AtB1234')
-    .input('nome', sql.VarChar(50), 'fusca')
-    .input('descricao', sql.VarChar(200), 'fusca para colecionar')
-    .input('fabricacao', sql.Date, '1982-04-02')
-    .input('preco', sql.Numeric, 3000)
-    .execute('SP_I_VEI_VEICULO')
-}).then(result => {
-    console.log(result)
-}).catch(err => {
-    console.log(err.message)
+//rota de conteudo publico
+app.use('/', express.static('public'))
+
+//rota para tratar 404
+app.use(function(req, res){
+    res.status(404).json({
+        mensagem: `A rota ${req.originalUrl} não existe!`    })
+})
+
+app.listen(port, function(){
+    console.log(`Servidor web rodando no terminal ${port}`)
 })
